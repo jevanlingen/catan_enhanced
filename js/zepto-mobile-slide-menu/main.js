@@ -13,8 +13,8 @@ Zepto(function($){
 	});
 
 	$(document).touchwipe({
-		 wipeLeft: function() { slidemenu(); },
-		 wipeRight: function() { slidemenu(); },
+		 wipeLeft: function() { slidemenu("left"); },
+		 wipeRight: function() { slidemenu("right"); },
 		 min_move_x: 40,
 		 min_move_y: 20,
 		 preventDefaultEvents: false
@@ -22,29 +22,28 @@ Zepto(function($){
 
 });
 
-function slidemenu(only_close) {
+function slidemenu(direction) {
 
 	$('#slidemenu').css('top', getPageScroll()[1] + 'px');
 	$('#slidemenu').height(viewport().height);
 
-	if ($('.slidemenu_btn').attr('data-slideopen') == "false" && !only_close) {
-
-		$('#slidemenu').show();
-		
-		$('#slidemenu').anim({ translateX: '160px'}, 0.1, 'ease-out');
+	if ($('.slidemenu_btn').attr('data-slideopen') == "false" && (direction == "left" || typeof direction === 'undefined')) {
+		$('#slidemenu')
+			.show()
+			.anim({ translateX: '160px'}, 0.1, 'ease-out');
 
 		$('.page').anim({ translateX: '160px'}, 0.1, 'ease-out');
 		
 		$('.slidemenu_btn').attr('data-slideopen', "true");
 
 	} else {
-
-		$('#slidemenu').anim({ translateX: '-160px'}, 0.5, 'ease-out');
-		$('.page').anim({ translateX: '0px'}, 0.1, 'ease-out');
-
-		$("body").css('left', '0px');
-		$('.slidemenu_btn').attr('data-slideopen', "false");
-		
+		if(direction == "right" || typeof direction === 'undefined') {
+			$('#slidemenu').anim({ translateX: '-160px'}, 0.5, 'ease-out');
+			$('.page').anim({ translateX: '0px'}, 0.1, 'ease-out');
+	
+			$("body").css('left', '0px');
+			$('.slidemenu_btn').attr('data-slideopen', "false");
+		}
 	}
 	
 }
